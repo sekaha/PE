@@ -36,11 +36,19 @@ def range_query(l, r):
 
 
 def construct_tree(a):
-    for i, n in enumerate(a):
-        update(i + 1, n)
+    # Precompute prefix sums
+    prefix = [0] * (len(a) + 1)
+
+    for i in range(1, len(a) + 1):
+        prefix[i] = prefix[i - 1] + a[i - 1]
+
+    # Remove excess
+    for i in range(1, len(a) + 1):
+        tree[i] = prefix[i] - prefix[i - (i & -i)]
 
 
 construct_tree(a)
 
+# Verification
 print(prefix[5], query(6))
 print(prefix[10] - prefix[5], range_query(6, 11))
