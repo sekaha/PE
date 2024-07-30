@@ -1,45 +1,59 @@
-# Naive prefix sum approach
-a = [6, 5, 1, 70, -1, 0, 12, 3, 4, -15, 9]
+def sum(idx, F):
+    running_sum = 0
+    while idx > 0:
+        running_sum += F[idx]
+        right_most_set_bit = idx & -idx
+        idx -= right_most_set_bit
 
-prefix = [a[0]]
-for n in a[1:]:
-    prefix.append(prefix[-1] + n)
-
-print("Naive prefix sum:", prefix)
-
-
-# Fenwick Tree (BIT) implementation
-def construct_bit(a):
-    bi_tree = [0] * (len(a) + 1)  # 1-based indexing
-    for i, val in enumerate(a):
-        update(i + 1, val, bi_tree)  # 1-based index adjustment
-    return bi_tree
+    return running_sum
 
 
-def update(index, value, bi_tree):
-    while index < len(bi_tree):
-        bi_tree[index] += value
-        index += index & -index
+def add(idx, X, F):
+    while idx < len(F):
+        F[idx] += X
+        right_most_set_bit = idx & -idx
+        idx += right_most_set_bit
 
 
-def get_sum(index, bi_tree):
-    total = 0
-    while index > 0:
-        total += bi_tree[index]
-        index -= index & -index
-    return total
+def range_query(l, r, F):
+    return sum(r, F) - sum(l - 1, F)
 
 
-def get_range_sum(left, right, bi_tree):
-    return get_sum(right, bi_tree) - get_sum(left - 1, bi_tree)
+def main():
+    n = 5
+
+    # 1-based indexing
+    arr = [-1e9, 1, 2, 3, 4, 5]
+    # Initially, all the values of Fenwick tree are 0
+    F = [0] * (n + 1)
+
+    # Build the Fenwick tree
+    for i in range(1, n + 1):
+        add(i, arr[i], F)
+
+    # Query the sum from index 1 to 3
+    print(range_query(1, 3, F))
+
+    # Query the sum from index 2 to 5
+    print(range_query(2, 5, F))
+
+    # Update element at index i to X
+    i = 3
+    X = 7
+
+    # We have passed X - arr[i] to the add method because
+    # the add method simply adds a number at a particular index.
+    # If we need to update the element, we need to pass
+    # the difference between the ith element and X to the add
+    # method.
+    add(i, X - arr[i], F)
+
+    # Query the sum from index 1 to 3
+    print(range_query(1, 3, F))
+
+    # Query the sum from 2 to 5
+    print(range_query(2, 5, F))
 
 
-# Initialize BIT and calculate sums
-bi_tree = construct_bit(a)
-
-print(bi_tree)
-
-# Query range sum for the prefix sum up to index 3 (0-based index, hence range 0 to 3)
-print(
-    "BIT range sum (0 to 3):", get_range_sum(1, 2, bi_tree)
-)  # Convert to 1-based index for BIT
+if __name__ == "__main__":
+    main()
