@@ -35,6 +35,7 @@ def range_query(l, r):
     return query(r) - query(l)
 
 
+# O(n) implementation
 def construct_tree(a):
     # Precompute prefix sums
     prefix = [0] * (len(a) + 1)
