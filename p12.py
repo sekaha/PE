@@ -11,17 +11,24 @@ def get_factor_count(n):
                 exponent += 1
             factors *= exponent + 1
 
-        if n == 1:
+        # break at last prime factor
+        if i * i > n:
             break
 
-    return factors
+    return factors * (1 + (n != 1))
 
 
-n = 500
-i = x = 0
+def get_triangular_factors(x):
+    if x % 2 == 0:
+        return get_factor_count(x // 2) * get_factor_count(x + 1)
+    return get_factor_count(x) * get_factor_count((x + 1) // 2)
 
-while get_factor_count(x) < n:
-    x += i
+
+print(get_triangular_factors(2162160))
+
+i = 1
+
+while (x := get_triangular_factors(i)) < 500:
     i += 1
 
-print(x)
+print(i * (i + 1) // 2 == 76576500)
