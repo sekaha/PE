@@ -10,6 +10,7 @@ def Q(n):
     m = 904961
     res = 0
     arr = []
+    arr2 = []
 
     # Lifting the exponent lemma v_p(x^n-y^n) = v_p(x-y)+v_p(n)
     for i in range(1, n + 1):
@@ -20,8 +21,11 @@ def Q(n):
         else:
             a = (i + 1) // 2
             res += v2(a)
-            # print(v2(a))
+            arr2.append(v2(a))
+
     print(" ".join(map(str, accumulate(arr))))
+    print(" ".join(map(str, accumulate(arr2))))
+
     return res
 
 
