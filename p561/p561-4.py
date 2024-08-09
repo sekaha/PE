@@ -1,4 +1,4 @@
-from time import time
+from time import perf_counter
 
 
 def Q(n):
@@ -8,7 +8,8 @@ def Q(n):
     return bin_carry_sum + bin_carry_sum * m
 
 
-s = time()
+s = perf_counter()
 Q(10**12)
-end = time() - s
+end = perf_counter() - s
+
 print(end, "seconds to compute")
