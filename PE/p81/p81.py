@@ -15,7 +15,8 @@ W, H = len(data[0]), len(data)
 dp = [[None] * W for _ in range(H)]
 
 # bottom right side base case
-dp[-1][-1] = data[-1][-1]
+for y in range(H):
+    dp[y][-1] = data[y][-1]
 
 
 # search
